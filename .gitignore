@@ -1,2 +1,5 @@
 # dataset files are not uploaded to Github
 data
+
+# other files
+postgresql-42.6.0.jar
