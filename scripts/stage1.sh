@@ -15,3 +15,17 @@ echo "
 \c project;
 SELECT * FROM ratings LIMIT 3;
 " | psql -U postgres
+
+# deletes compressed avro files on db from hdfs
+hdfs dfs -rm -r /project
+
+# creates compressed avro files
+sqoop import-all-tables \
+    -Dmapreduce.job.user.classpath.first=true \
+    --connect jdbc:postgresql://localhost/project \
+    --username postgres \
+    --warehouse-dir /project \
+    --as-avrodatafile \
+    --compression-codec=snappy \
+    --outdir /project/avsc \
+    --m 1
