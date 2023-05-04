@@ -72,13 +72,16 @@ REFERENCES movies(movie_id);
 SET datestyle TO iso, ymd;
 
 \COPY users FROM 'data/users_export.csv' WITH (FORMAT CSV, DELIMITER ',', HEADER, NULL '');
-\COPY movies FROM 'data/movie_data.csv' WITH (FORMAT CSV, DELIMITER ',', HEADER, NULL '');
+\COPY movies FROM 'data/movie_data.csv' WITH (FORMAT CSV, DELIMITER ',', HEADER, NULL 'null');
 --\COPY users FROM 'data/users_export.csv' WITH (FORMAT CSV, DELIMITER ',', HEADER, NULL '');
 
 SELECT *
 FROM movies
 LIMIT 10;
 
+
+
+CREATE TABLE mytype (id uuid, amount numeric(13,4));  INSERT INTO mytype VALUES   ('0d6311cc-0d74-4a32-8cf9-87835651e1ee', 25)  ,('6449fb3b-844e-440e-8973-31eb6bbefc81', 10);  SELECT ARRAY(SELECT m FROM mytype m);
 
 
 " | psql -U postgres
