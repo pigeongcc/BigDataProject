@@ -17,3 +17,6 @@ unzip -n data/movie_data.csv.zip -d data
 
 echo
 
+# preprocess the csv files before feeding to PostgreSQL
+pwd
+python scripts/preprocess/preprocess_csv.py

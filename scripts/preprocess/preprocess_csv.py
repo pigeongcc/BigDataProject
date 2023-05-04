@@ -13,4 +13,4 @@ def to_psql_array(x):
 
 movies.genres = movies.genres.apply(lambda x: to_psql_array(x))
 
-movies.to_csv(movies_path)
+movies.to_csv(movies_path, index=False)

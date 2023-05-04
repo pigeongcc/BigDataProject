@@ -17,7 +17,7 @@ CREATE DATABASE project;
 -- add tables 
 
 CREATE TABLE users (
-	_id TEXT,
+	_id TEXT NOT NULL,
 	display_name TEXT,
 	num_ratings_pages INTEGER,
 	num_reviews INTEGER,
@@ -25,25 +25,25 @@ CREATE TABLE users (
 );
 
 CREATE TABLE movies (
-	_id TEXT,
-	temp_genres TEXT,
+	_id TEXT NOT NULL,
+	genres TEXT [],
 	_image_url TEXT,
 	imdb_id TEXT,
 	_imdb_link TEXT,
 	movie_id TEXT NOT NULL PRIMARY KEY,
-	movie_title TEXT NOT NULL,
-	original_language TEXT NOT NULL,
+	movie_title TEXT,
+	original_language TEXT,
 	overview TEXT,
 	popularity REAL,
 	temp_production_countries TEXT,
 	release_date DATE,
-	runtime INTEGER,
+	runtime REAL,
 	temp_spoken_languages TEXT,
 	_tmdb_id TEXT,
 	_tmdb_link TEXT,
-	vote_average REAL NOT NULL,
-	vote_count INTEGER NOT NULL,
-	year_released INTEGER NOT NULL
+	vote_average REAL,
+	vote_count REAL,
+	year_released REAL
 );
 -- runtime: convert 0 and null to NULL
 
