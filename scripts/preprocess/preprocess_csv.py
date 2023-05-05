@@ -56,6 +56,9 @@ ratings = ratings.drop(ratings[ratings.user_id == 'jacksonmaines'].index)
 #left_join = ratings.merge(movies, on='movie_id', how='left', indicator=True)
 ratings = ratings.drop(ratings[~ratings.movie_id.isin(movies.movie_id)].index)
 
+# drop unused columns
+movies = movies.drop(lables=['image_url', 'imdb_link', 'tmdb_id', 'tmdb_link'])
+
 # save new csv
 movies.to_csv(movies_path_pd, index=True)
 ratings.to_csv(ratings_path_pd, index=False)

@@ -20,9 +20,9 @@ CREATE TABLE users (
 CREATE TABLE movies (
 	_id TEXT NOT NULL,
 	genres TEXT [],
-	_image_url TEXT,
+	--_image_url TEXT,
 	imdb_id TEXT,
-	_imdb_link TEXT,
+	--_imdb_link TEXT,
 	movie_id TEXT NOT NULL PRIMARY KEY,
 	movie_title TEXT,
 	original_language TEXT,
@@ -32,8 +32,8 @@ CREATE TABLE movies (
 	release_date DATE,
 	runtime REAL,
 	temp_spoken_languages TEXT,
-	_tmdb_id TEXT,
-	_tmdb_link TEXT,
+	--_tmdb_id TEXT,
+	--_tmdb_link TEXT,
 	vote_average REAL,
 	vote_count REAL,
 	year_released REAL
