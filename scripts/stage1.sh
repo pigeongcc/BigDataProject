@@ -4,7 +4,7 @@
 echo
 
 # run the sql script to build a relational database
-psql -U postgres -d project -f stage1/db.sql
+psql -U postgres -d project -f ../sql/stage1.sql
 
 # some operation on the resulted DB
 echo "
