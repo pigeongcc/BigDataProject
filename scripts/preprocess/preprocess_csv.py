@@ -7,7 +7,6 @@ movies_path = 'data/movie_data.csv'
 movies_path_pd = 'data/movie_data_pd.csv'
 movies = pd.read_csv(movies_path, lineterminator='\n', index_col='_id')
 
-
 ratings_path = 'data/ratings_export.csv'
 ratings_path_pd = 'data/ratings_export_pd.csv'
 ratings = pd.read_csv(ratings_path, lineterminator='\n', )
@@ -51,7 +50,8 @@ movies = movies.replace({np.nan: ''})
 # fix ratings table
 ratings = ratings.replace({'movie_id': {np.nan: 'null_id', 'nan': 'nan_id'} })
 
-ratings = ratings.drop(ratings[ratings.user_id == 'jacksonmaines'].index)
+# the step below is not necessary after removing users table from consideration
+#ratings = ratings.drop(ratings[ratings.user_id == 'jacksonmaines'].index)
 
 #left_join = ratings.merge(movies, on='movie_id', how='left', indicator=True)
 ratings = ratings.drop(ratings[~ratings.movie_id.isin(movies.movie_id)].index)
