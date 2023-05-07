@@ -1,0 +1,21 @@
+1. users table is useless as it contains false info about number of reviews
+    
+2. Let us divide the movie features into three groups:
+
+    the most important features for movie RecSys: 
+                    'genres', 'original_language', 'overview',
+                    'popularity', 'spoken_languages', 'vote_average', 'year_released'
+
+    features that may be useful:
+                    'production_countries', 'vote_count',
+                    'movie_title' (если понравились Шрэк, Шрэк 2 - есть смысл порекомендовать Шрэк 3)
+
+    probably useless features:
+                    'runtime', 'release_date'
+
+3. there are a lot of movies that has no movie features
+
+    - 2164: only movie_id (257 reviews at max)
+
+    they have only movie_id, and some (on average ) reviews
+    since they have no features, it's reasonable to exclude them from the dataset.
