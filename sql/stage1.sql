@@ -19,7 +19,7 @@ CREATE TABLE users (
 
 CREATE TABLE movies (
 	_id TEXT NOT NULL,
-	genres TEXT [],
+	genres TEXT,
 	--_image_url TEXT,
 	imdb_id TEXT,
 	--_imdb_link TEXT,
