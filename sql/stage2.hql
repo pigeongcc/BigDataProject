@@ -3,8 +3,6 @@ DROP DATABASE IF EXISTS project;
 CREATE DATABASE project;
 USE project;
 
-select 2;
-
 -- Since the data files are compressed in Snappy codec, 
 -- we need to set some configurations for loading the data from HDFS as follows:
 SET mapreduce.map.output.compress = true;
