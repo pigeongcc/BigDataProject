@@ -4,8 +4,8 @@
 hdfs dfs -mkdir /project/avsc
 
 # move .avsc files into hdfs
-hdfs dfs -put ../avsc/movies.avsc /project/avsc
-hdfs dfs -put ../avsc/ratings.avsc /project/avsc
+hdfs dfs -put output/avsc/movies.avsc /project/avsc
+hdfs dfs -put output/avsc/ratings.avsc /project/avsc
 # hdfs dfs -put ../avsc/users.avsc /project/avsc
 
 # execute HiveQL script

@@ -27,5 +27,5 @@ sqoop import-all-tables \
     --warehouse-dir /project \
     --as-avrodatafile \
     --compression-codec=snappy \
-    --outdir /project/avsc \
+    --outdir output/avsc \
     --m 1

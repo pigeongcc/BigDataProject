@@ -1,5 +1,8 @@
-# dataset files are not uploaded to Github
+# dataset files
 data
+
+# avsc files
+output/avsc/*
 
 # other files
 postgresql-42.6.0.jar
