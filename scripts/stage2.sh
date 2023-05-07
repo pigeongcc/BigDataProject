@@ -10,3 +10,11 @@ hdfs dfs -put output/avsc/ratings.avsc /project/avsc
 
 # execute HiveQL script
 hive -f ./sql/stage2.hql
+
+
+# build csv files for EDA part
+# query 1
+echo "genres,count" > output/eda/q1/q1.csv
+cat output/eda/q1/* >> output/q1.csv
+
+# query 2
