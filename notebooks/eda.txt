@@ -17,3 +17,5 @@
 
     - 2164: only movie_id and some reviews (257 at max)
       since they have no features, it's reasonable to exclude them from the dataset.
+
+4. drop films with low real vote_count values
