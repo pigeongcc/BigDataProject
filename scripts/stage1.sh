@@ -29,3 +29,17 @@ sqoop import-all-tables \
     --compression-codec=snappy \
     --outdir output/avsc \
     --m 1
+
+#     --hive-import
+#     --map-column-hive 'genres'=ARRAY\<STRING\> \
+
+# sqoop import-all-tables
+#     -Dmapreduce.job.user.classpath.first=true
+#     --connect jdbc:postgresql://localhost/project
+#     --username postgres
+#     --warehouse-dir /project
+#     --as-avrodatafile
+#     --compression-codec=snappy
+#     --map-column-hive 'genres'=ARRAY\<STRING\>
+#     --outdir output/avsc 
+#     --m 1
