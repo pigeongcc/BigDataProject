@@ -17,7 +17,7 @@ hive -f ./sql/stage2_eda.hql
 
 # build csv files for EDA part
 # query 1
-echo "genres,count" > output/eda/q1/q1.csv
-cat output/eda/q1/* >> output/eda/q1/q1.csv
+echo -e "genres\tcount" > output/eda/q1.csv
+cat output/eda/q1/* >> output/eda/q1.csv
 
 # query 2

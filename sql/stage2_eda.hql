@@ -4,7 +4,7 @@ USE project;
 -- query 1
 INSERT OVERWRITE LOCAL DIRECTORY 'output/eda/q1'
 ROW FORMAT DELIMITED 
-FIELDS TERMINATED BY ','
+FIELDS TERMINATED BY '\t'
 
 SELECT genres, COUNT(*) as ctr
 FROM movies
