@@ -56,7 +56,7 @@ movies.info(buf=buffer)
 st.text(buffer.getvalue())
 st.markdown("**Ratings distribution:**")
 st.write(movies.describe())
-# TODO: bar chart of vote count
+# TODO: bar chart of real vote count
 # TODO: bar chart of year released
 
 st.markdown('---')

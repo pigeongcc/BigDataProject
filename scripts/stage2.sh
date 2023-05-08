@@ -21,3 +21,5 @@ echo -e "genres\tcount" > output/eda/q1.csv
 cat output/eda/q1/* >> output/eda/q1.csv
 
 # query 2
+echo -e "genre\tcount" > output/eda/q2.csv
+cat output/eda/q2/* >> output/eda/q2.csv
