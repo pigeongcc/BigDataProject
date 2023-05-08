@@ -1,5 +1,5 @@
 -- create database
-DROP DATABASE IF EXISTS project;
+DROP DATABASE IF EXISTS project CASCADE;
 CREATE DATABASE project;
 USE project;
 

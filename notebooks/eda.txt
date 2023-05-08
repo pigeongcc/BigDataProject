@@ -15,7 +15,5 @@
 
 3. there are a lot of movies that has no movie features
 
-    - 2164: only movie_id (257 reviews at max)
-
-    they have only movie_id, and some (on average ) reviews
-    since they have no features, it's reasonable to exclude them from the dataset.
+    - 2164: only movie_id and some reviews (257 at max)
+      since they have no features, it's reasonable to exclude them from the dataset.
