@@ -59,3 +59,14 @@ FROM dummy_genres
 LATERAL VIEW explode(genres_arr) dummy_genres AS genre
 GROUP BY genre
 SORT BY genre_ctr DESC;
+
+
+-- query 5
+-- popularity distribution
+INSERT OVERWRITE LOCAL DIRECTORY 'output/eda/q5'
+ROW FORMAT DELIMITED 
+FIELDS TERMINATED BY '\t'
+
+SELECT movie_id, popularity
+FROM movies
+SORT BY popularity DESC;
