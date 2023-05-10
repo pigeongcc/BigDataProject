@@ -14,8 +14,8 @@ hdfs dfs -put output/avsc/ratings.avsc /project/avsc
 echo -e "\n~ ~ ~ Running stage2.hql\n"
 hive -f ./sql/stage2.hql
 
-echo -e "\n~ ~ ~ Running hive_optimization.hql\n"
-hive -f ./sql/hive_optimization.hql
+# echo -e "\n~ ~ ~ Running hive_optimization.hql\n"
+# hive -f ./sql/hive_optimization.hql
 
 # run EDA
 echo -e "\n~ ~ ~ Running stage2_eda.hql\n"
