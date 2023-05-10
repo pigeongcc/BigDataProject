@@ -1,3 +1,5 @@
+USE project;
+
 -- setup partitioning and bucketing
 SET hive.exec.dynamic.partition = true;
 SET hive.exec.dynamic.partition.mode = nonstrict;
@@ -21,7 +23,7 @@ CREATE EXTERNAL TABLE movies_opt(
 	genres STRING,
 	movie_id STRING,
 	popularity FLOAT,
-	release_date DATE
+	release_date STRING
 )
 PARTITIONED BY (year_released FLOAT)
 CLUSTERED BY (movie_id) INTO 100 BUCKETS
@@ -29,5 +31,5 @@ STORED AS AVRO LOCATION '/project/movies_opt'
 TBLPROPERTIES ('AVRO.COMPRESS'='SNAPPY');
 
 -- insert the data from unpartitioned tables
-INSERT INTO ratings_opt SELECT * FROM ratings;
-INSERT INTO movies_opt SELECT * FROM movies;
+INSERT INTO ratings_opt PARTITION (rating_val) SELECT movie_id, rating_val, user_id FROM ratings;
+INSERT INTO movies_opt PARTITION (year_released) SELECT genres, movie_id, popularity, release_date, year_released FROM movies;

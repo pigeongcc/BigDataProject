@@ -14,7 +14,7 @@ url = {
 
 ratings = pd.read_csv("/root/BigDataProject/data/ratings_export_pd.csv")
 movies = pd.read_csv("/root/BigDataProject/data/movie_data_pd.csv")
-movies.runtime = movies.runtime.replace(0, np.nan)
+
 q1 = pd.read_csv("/root/BigDataProject/output/eda/q1.csv", sep='\t')
 q2 = pd.read_csv("/root/BigDataProject/output/eda/q2.csv", sep='\t')
 q3 = pd.read_csv("/root/BigDataProject/output/eda/q3.csv", sep='\t')
@@ -84,8 +84,27 @@ st.header("Exploratory Data Analysis")
 st.subheader('Query #1')
 st.text('Real `vote_count` value for a sample user differs from the given one')
 st.write(q1)
-st.image(url["users_useless"], caption = "Incorrect value in Users table", width=300)
+st.image(url["users_useless"], caption = "Values in Users table are incorrect", width=300)
 st.text('Q1 conclusion: we may exclude `users` table from considerations, as it contains no useful data: `user_id` is already present in `ratings` table, and `vote_count` provided is incorrect.')
+
+
+st.subheader('Query #2')
+st.text('Distribution of users by # of votes:')
+st.write(q2)
+st.text('Q2 conclusion: we should try to set the vote threshold for users and omit those who does not reach it. After this evaluate the effect on performance.')
+
+
+st.subheader('Query #3')
+st.text('Distribution of movies by # of votes:')
+st.write(q3)
+st.text('Q3 conclusion: we should try to set the vote threshold for movies and omit those which does not reach it. After this evaluate the effect on performance.')
+
+
+st.subheader('Query #4')
+st.text('Distribution of movies by genres:')
+st.bar_chart(q4)
+st.text('Q4 conclusion: we are capable of building bar charts.')
+
 
 st.subheader('Query #5')
 st.text('Distribution of `popularity` feature:')
@@ -98,7 +117,11 @@ print(q5_bins)
 print("dtype:")
 print(q5_bins.dtype)
 st.bar_chart(q5_bins)
+st.text("""Q5 conclusion: we may divide the rating in the user rating matrix (URM) into two components. 
+            1. The original rating from `ratings` table (the term with the weight W_orig ~ 0.8)
+            2. The movie popularity. We may try binary format for the baseline solution: a movie is either popular, or not (weight W_popular = 1 - W_orig)""")
 
+st.latex("Score_{final} = W_{orig} * Score_{orig} + W_{popular} * Score_{popular}")
 
 
 st.markdown('---')
