@@ -38,7 +38,7 @@ st.image(url["header_pic"], caption = "Movies RecSys", width=600)
 
 st.markdown('---')
 st.header('Descriptive Data Analysis')
-st.text("To train the RecSys model, we used the Letterboxd Movie Ratings Data, freely available on Kaggle ([link](%s))" % url['kaggle'])
+st.markdown("To train the RecSys model, we used the Letterboxd Movie Ratings Data, freely available on Kaggle ([link](%s))" % url['kaggle'])
 emps_dda = pd.DataFrame(columns = ["Table", "# of features", "# of instances"],
                         data = [["Ratings", ratings.shape[0], ratings.shape[1]],
                                 ["Movies", movies.shape[0], movies.shape[1]]])
@@ -82,32 +82,32 @@ st.header("Exploratory Data Analysis")
 """
 
 st.subheader('Query #1')
-st.text('Real `vote_count` value for a sample user differs from the given one')
+st.markdown('Real `vote_count` value for a sample user differs from the given one')
 st.write(q1)
 st.image(url["users_useless"], caption = "Values in Users table are incorrect", width=300)
-st.text('Q1 conclusion: we may exclude `users` table from considerations, as it contains no useful data: `user_id` is already present in `ratings` table, and `vote_count` provided is incorrect.')
+st.markdown('Q1 conclusion: we may exclude `users` table from considerations, as it contains no useful data: `user_id` is already present in `ratings` table, and `vote_count` provided is incorrect.')
 
 
 st.subheader('Query #2')
-st.text('Distribution of users by # of votes:')
+st.markdown('Distribution of users by # of votes:')
 st.write(q2)
-st.text('Q2 conclusion: we should try to set the vote threshold for users and omit those who does not reach it. After this evaluate the effect on performance.')
+st.markdown('Q2 conclusion: we should try to set the vote threshold for users and omit those who does not reach it. After this evaluate the effect on performance.')
 
 
 st.subheader('Query #3')
-st.text('Distribution of movies by # of votes:')
+st.markdown('Distribution of movies by # of votes:')
 st.write(q3)
-st.text('Q3 conclusion: we should try to set the vote threshold for movies and omit those which does not reach it. After this evaluate the effect on performance.')
+st.markdown('Q3 conclusion: we should try to set the vote threshold for movies and omit those which does not reach it. After this evaluate the effect on performance.')
 
 
 st.subheader('Query #4')
-st.text('Distribution of movies by genres:')
-st.bar_chart(q4)
-st.text('Q4 conclusion: we are capable of building bar charts.')
+st.markdown('Distribution of movies by genres:')
+# st.bar_chart(q4)
+st.markdown('Q4 conclusion: we are capable of building bar charts.')
 
 
 st.subheader('Query #5')
-st.text('Distribution of `popularity` feature:')
+st.markdown('Distribution of `popularity` feature:')
 q5.popularity = q5.popularity.replace({'\N': 0.6})
 q5.popularity = q5.popularity.astype('float16')
 q5_bins = pd.qcut(q5.popularity, 2, duplicates='drop').value_counts()
@@ -117,7 +117,7 @@ print(q5_bins)
 print("dtype:")
 print(q5_bins.dtype)
 st.bar_chart(q5_bins)
-st.text("""Q5 conclusion: we may divide the rating in the user rating matrix (URM) into two components. 
+st.markdown("""Q5 conclusion: we may divide the rating in the user rating matrix (URM) into two components. 
             1. The original rating from `ratings` table (the term with the weight W_orig ~ 0.8)
             2. The movie popularity. We may try binary format for the baseline solution: a movie is either popular, or not (weight W_popular = 1 - W_orig)""")
 
@@ -152,4 +152,4 @@ st.subheader('Training vs. Error chart')
 st.write("matplotlib or altair chart")
 
 st.header('Inference')
-st.text('Given a sample, predict its value and display results in a table.')
+st.markdown('Given a sample, predict its value and display results in a table.')

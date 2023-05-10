@@ -8,7 +8,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 
 SELECT user_id, COUNT(*) AS vote_count
-FROM ratings_opt
+FROM ratings
 WHERE user_id = 'deathproof'
 GROUP BY user_id;
 
@@ -20,7 +20,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 
 SELECT movie_id, COUNT(*) AS vote_count
-FROM ratings_opt
+FROM ratings
 GROUP BY movie_id
 SORT BY vote_count ASC;
 
@@ -32,7 +32,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 
 SELECT user_id, COUNT(*) AS vote_count
-FROM ratings_opt
+FROM ratings
 GROUP BY user_id
 SORT BY vote_count ASC;
 
@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS dummy_genres;
 CREATE TABLE dummy_genres(genres_arr ARRAY<STRING>);
 
 WITH genres_column AS
-(SELECT genres FROM movies_opt),
+(SELECT genres FROM movies),
 genres_array AS 
 (SELECT split(regexp_extract(genres, '^\\["(.*)\\"]$',1),'","')
 FROM genres_column)
@@ -68,5 +68,5 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\t'
 
 SELECT movie_id, popularity
-FROM movies_opt
+FROM movies
 SORT BY popularity DESC;
