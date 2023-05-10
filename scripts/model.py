@@ -5,13 +5,13 @@ sys.setdefaultencoding('utf-8')
 
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
-from pyspark.ml import Pipeline
 from pyspark.ml.feature import StringIndexer
 from pyspark.ml.recommendation import ALS
 from pyspark.ml.evaluation import RegressionEvaluator
 from pyspark.ml.tuning import ParamGridBuilder
 from pyspark.ml.tuning import CrossValidator
 from pyspark.ml.feature import IndexToString
+from pyspark.sql.types import StructType, StructField, StringType
 
 SEED = 42
 
@@ -62,23 +62,26 @@ als = ALS(
     nonnegative=True
 )
           
-model = als.fit(training)
+# model = als.fit(training)
 
 
-# param_grid = ParamGridBuilder().addGrid(als.regParam, [.05, 1]).build()
-# evaluator = RegressionEvaluator(metricName="rmse", labelCol="rating_val", predictionCol="prediction")
-# cv = CrossValidator(estimator = als, estimatorParamMaps = param_grid, evaluator = evaluator, numFolds = 2)
+param_grid = ParamGridBuilder().addGrid(als.regParam, [.05, 1]).build()
+# .addGrid(als.rank, [5, 40, 80, 120])
+# .addGrid(als.maxIter, [5, 100, 250, 500])
+# .addGrid(als.regParam, [.05, .1, 1.5])
+evaluator = RegressionEvaluator(metricName="rmse", labelCol="rating_val", predictionCol="prediction")
+cv = CrossValidator(estimator = als, estimatorParamMaps = param_grid, evaluator = evaluator, numFolds = 2)
 
-# model = cv.fit(training)
-# best_model = model.bestModel
-# predictions = best_model.transform(test)
-# rmse = evaluator.evaluate(predictions)
+model = cv.fit(training)
+best_model = model.bestModel
+predictions = best_model.transform(test)
+rmse = evaluator.evaluate(predictions)
 
-# print ("**Best Model**")
-# print ("RMSE =", rmse)
-# print (" Rank:", best_model.rank)
-# print (" MaxIter:", best_model._java_obj.parent().getMaxIter())
-# print (" RegParam:", best_model._java_obj.parent().getRegParam())
+print ("**Best Model**")
+print ("RMSE =", rmse)
+print (" Rank:", best_model.rank)
+print (" MaxIter:", best_model._java_obj.parent().getMaxIter())
+print (" RegParam:", best_model._java_obj.parent().getRegParam())
 
 
 # Prediction or specific data sample
@@ -100,3 +103,27 @@ top_5_movies = movie_inverter.transform(top_5_movies)
 
 top_5_movies = top_5_movies.drop("movie_id_enc")
 top_5_movies.show()
+
+
+def suggest_for_user(user_name: str, limit=5):
+    data = [(user_name,)]
+    schema = StructType([StructField("user_id", StringType(), True)])
+    df = spark.createDataFrame(data=data, schema=schema)
+    
+    df = user_indexer.transform(df)
+    user = df.collect()[0].user_id_enc
+
+    user_prods = ratings.select("movie_id_enc").distinct().join(ratings.filter("user_id_enc=" + str(user)).select("user_id_enc").distinct(), how="full")
+    user_prods.summary().show()
+
+    user_prods_res = model.transform(user_prods)
+    user_prods_res.show()
+
+    top_products = user_prods_res.sort(F.desc("prediction")).limit(limit).select("movie_id_enc")
+    movie_inverter = IndexToString(inputCol="movie_id_enc", outputCol="movie", labels=movie_indexer.labels)
+    itd = movie_inverter.transform(top_products)
+
+    itd = itd.drop("movie_id_enc")
+    itd.show()
+
+suggest_for_user('hafilova')
