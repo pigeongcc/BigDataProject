@@ -8,7 +8,8 @@ buffer = io.StringIO()
 url = {
     "header_pic": "https://akket.com/wp-content/uploads/2020/04/KinoPoisk-HD-Besplatnaya-podpiska-Filmy-Serialy-5.jpg",
     "kaggle": "https://www.kaggle.com/datasets/samlearner/letterboxd-movie-ratings-data?select=movie_data.csv",
-} 
+    "users_useless": "https://doc-0k-34-docs.googleusercontent.com/docs/securesc/6vgfqgfhgmfl6ia38c4bpaq0c20ebc3m/dlnqliih0m8v523178ddpmass4vkvkvh/1683747975000/04388380893538145158/04388380893538145158/1Qn2plL6QEKM9DWiemEgLftajfV8Yryut?e=download&ax=ADWCPKCzpNeqVNIAMrnExUEQeXKhTHdnEefUXXPFe5m8NIoQVz68u7j_mMzPVjFJU-__pplY7LL_l-CPxa6ubE4N3900krO01nQAan_WJQUvKAzKsksZeGSJeHVggFF-2Ryr6ytHEmmR4mOjx8BrLQsAEUtJcmhGA3b8z5TawjT8XODuc3BQcOQkmjTm9OBjWeQngSiabQJK55S0zXsxmu3Su5iufwv4_ViJtu9pop8mKTcT3VQoIn5VqJi5ZaHb9qCQ1euBBOdjjnPTtl3mROrMX3R215172uvabvpezj8wd6NlB3Uw-J3EmY-LFDMF90pPCmb-s1ZUdskmZ4Cpq93RlInFIMY9T5gUIK-pMOTdguJN5K77on68_yR7wkySN8GOcLIjSBKAYnsbfEizfebuKQXPn7pY50fzmsut0bD7spFHxuIhswYFh-D_C1rTmNvdcvsBNYMPe_wAciFRi2rM0bX-GLjKMG_-CLt_iVv2UmXfs3VHnXRdmH0FBSVoyijgZqPutSc0wwban8TO4QMZmTaZT-WHcoNWYU_5GHHxKSdBF5DRWhu4FwRrIqeTM4Gh0aCjoJodUmm_5S5ud5l52YQ6U7bhI3Zr1Rb750aCB4FhrPC1tIrUWsA564_kU8Gfq9BQ2eoIru4yK1YJE-loLKzTp2o8TXdoifkqvrolwxARFREVbbX4DmVqwJDSerniBt2bTZGLvodrEPGV3gMbATCn6eqF_iO7eHxsKbjXRBRSiMMT7VMHjj7AVzvtV0wDzHSNyc7TIlsUPbSxsUALsgu_9-7a1PSkIuQ-wZGhU1FK9pNUK3ECs8vY69ijkw3CMvz75vIDMvqdicZrePjCEgg0dvCKwsYPkXEd01jtzTtkTWHOKaCG_ObSufYCiSVxR9ZehjNY-jN_JV34YzR94rKgUwUZnWmW&uuid=2436eadc-8146-433b-aa8c-be17df15a764&authuser=0&nonce=so6q8fuj9l4po&user=04388380893538145158&hash=qch9i62pvfgev6bfsdaviip9g43hdhlr",
+}
 
 
 ratings = pd.read_csv("/root/BigDataProject/data/ratings_export_pd.csv")
@@ -25,7 +26,7 @@ q5 = pd.read_csv("/root/BigDataProject/output/eda/q5.csv", sep='\t')
 st.markdown('---')
 st.title("Movies RecSys - Big Data Project, S23")
 st.markdown("""<style>body {
-    background-color: #eee;
+    background-color: white;
 }
 .fullScreenFrame > div {
     display: flex;
@@ -68,20 +69,33 @@ st.write(movies.describe())
 st.markdown('---')
 st.header("Exploratory Data Analysis")
 
+"""
+1. users table is useless as it contains false vote_count value
+
+2. users with low real vote_count value
+
+3. movies with low real vote_count value
+
+4. movies genres distribution
+
+5. movies popularity distribution
+"""
+
 st.subheader('Query #1')
-st.text('Distribution of employees in departments')
+st.text('Real `vote_count` value for a sample user differs from the given one')
 st.write(q1)
-# TODO: show screenshot from kaggle
+st.image(url["users_useless"], caption = "Incorrect value in Users table", width=300)
+st.text('Q1 conclusion: we may exclude `users` table from considerations, as it contains no useful data: `user_id` is already present in `ratings` table, and `vote_count` provided is incorrect.')
 
 st.subheader('Query #5')
 st.text('Distribution of `popularity` feature:')
 q5.popularity = q5.popularity.replace({'\N': 0.6})
 q5.popularity = q5.popularity.astype('float16')
-q5_bins = pd.qcut(q5.popularity, 6, duplicates='drop').value_counts()
+q5_bins = pd.qcut(q5.popularity, 2, duplicates='drop').value_counts()
+q5_bins = q5_bins.reindex([0.84, 6024.0])
 print("bins:")
 print(q5_bins)
 print("dtype:")
-q5_bins = q5_bins.reindex([0.6, 6024.0, 1.4, 2.795, 0.84])
 print(q5_bins.dtype)
 st.bar_chart(q5_bins)
 

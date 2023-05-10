@@ -1,16 +1,16 @@
 1. users table is useless as it contains false vote_count value
-  drop users with low real vote_count value
 
-2. drop films with low real vote_count value
+2. users with low real vote_count value
 
-3. there are a lot of movies that has no movie features
-
-    - 2164: only movie_id and some reviews (257 at max)
-      since they have no features, it's reasonable to exclude them from the dataset.
+3. movies with low real vote_count value
 
 4. movies genres distribution
-    
-5. Let us divide the movie features into three groups:
+
+5. movies popularity distribution
+
+
+
+1*. Let us divide the movie features into three groups:
 
     the most important features for movie RecSys: 
                     'genres', 'original_language', 'overview',
@@ -22,3 +22,8 @@
 
     probably useless features:
                     'runtime', 'release_date'
+
+2*. there are a lot of movies that has no movie features
+
+    - 2164: only movie_id and some reviews (257 at max)
+      since they have no features, it's reasonable to exclude them from the dataset.
