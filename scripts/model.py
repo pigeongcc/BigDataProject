@@ -18,7 +18,7 @@ SEED = 42
 
 spark = SparkSession.builder\
         .appName("BDT Project")\
-        .config("spark.sql.catalogImplementation","hive")\
+        .config("spark.sql.catalogImplementation", "hive")\
         .config("hive.metastore.uris", "thrift://sandbox-hdp.hortonworks.com:9083")\
         .config("spark.sql.avro.compression.codec", "snappy")\
         .enableHiveSupport()\
@@ -70,18 +70,19 @@ param_grid = ParamGridBuilder().addGrid(als.regParam, [.05, 1]).build()
 # .addGrid(als.maxIter, [5, 100, 250, 500])
 # .addGrid(als.regParam, [.05, .1, 1.5])
 evaluator = RegressionEvaluator(metricName="rmse", labelCol="rating_val", predictionCol="prediction")
-cv = CrossValidator(estimator = als, estimatorParamMaps = param_grid, evaluator = evaluator, numFolds = 2)
+cv = CrossValidator(estimator=als, estimatorParamMaps=param_grid, evaluator=evaluator, numFolds=2)
 
 model = cv.fit(training)
 best_model = model.bestModel
+best_model.save('models/best_als')
 predictions = best_model.transform(test)
 rmse = evaluator.evaluate(predictions)
 
-print ("**Best Model**")
-print ("RMSE =", rmse)
-print (" Rank:", best_model.rank)
-print (" MaxIter:", best_model._java_obj.parent().getMaxIter())
-print (" RegParam:", best_model._java_obj.parent().getRegParam())
+print("**Best Model**")
+print("RMSE =", rmse)
+print(" Rank:", best_model.rank)
+# print(" MaxIter:", best_model._java_obj.parent().getMaxIter())
+# print(" RegParam:", best_model._java_obj.parent().getRegParam())
 
 
 def suggest_for_user(user_name, limit=5):
@@ -92,14 +93,20 @@ def suggest_for_user(user_name, limit=5):
     df = user_indexer.transform(df)
     user = df.collect()[0].user_id_enc
 
-    user_prods = ratings.select("movie_id_enc").distinct().join(ratings.filter("user_id_enc=" + str(user)).select("user_id_enc").distinct(), how="full")
+    user_prods = ratings.select("movie_id_enc").distinct() \
+        .join(ratings.filter("user_id_enc=" + \
+        str(user)).select("user_id_enc").distinct(), how="full")
     user_prods.summary().show()
 
     user_prods_res = model.transform(user_prods)
     user_prods_res.show()
 
     top_products = user_prods_res.sort(F.desc("prediction")).limit(limit).select("movie_id_enc")
-    movie_inverter = IndexToString(inputCol="movie_id_enc", outputCol="movie", labels=movie_indexer.labels)
+    movie_inverter = IndexToString(
+        inputCol="movie_id_enc", 
+        outputCol="movie", 
+        labels=movie_indexer.labels
+    )
     itd = movie_inverter.transform(top_products)
 
     itd = itd.drop("movie_id_enc")
