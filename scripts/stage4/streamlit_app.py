@@ -7,6 +7,7 @@ import altair as alt
 url = {
     "header_pic": "https://akket.com/wp-content/uploads/2020/04/KinoPoisk-HD-Besplatnaya-podpiska-Filmy-Serialy-5.jpg",
     "kaggle": "https://www.kaggle.com/datasets/samlearner/letterboxd-movie-ratings-data?select=movie_data.csv",
+    "recsys": "https://user-images.githubusercontent.com/50820635/85274861-7e0e3b00-b4ba-11ea-8cd3-2690ec55a67a.jpg",
 }
 
 
@@ -32,6 +33,15 @@ st.markdown("""<style>body {
 </style>""", unsafe_allow_html=True)
 
 st.image(url["header_pic"], caption = "Movies RecSys", width=600)
+
+st.markdown('---')
+st.header('About Recommendation Systems')
+st.image(url["recsys"], caption = "RecSys Map", width=1300)
+st.markdown("""- Data: user rating matrix (URM)
+- Model: memory-based collaborative filtering (alternating least squares)
+- Evaluation type: offline (k-Fold cross-validation)
+- Evaluation metric: RMSE on rating predictions""")
+
 
 st.markdown('---')
 st.header('Descriptive Data Analysis')
@@ -88,6 +98,7 @@ st.markdown('Distribution of movies by # of votes:')
 q2_bins = pd.qcut(q2.vote_count, 2, duplicates='drop').value_counts()
 q2_dict = {'bin':['1 to 3', '4 to 6000'], 'vote_count':q2_bins.values}
 q2_df = pd.DataFrame(q2_dict).set_index('bin')
+st.bar_chart(q2_df)
 st.markdown('Q2 conclusion: we should try to set the vote threshold for movies and omit those which do not reach it. After this evaluate the effect on performance.')
 
 
@@ -130,25 +141,49 @@ st.markdown('---')
 st.header('Predictive Data Analisys')
 st.subheader('Models Configurations')
 st.table(pd.DataFrame([
-            [1, 'ALS', 'setting1', 1.0],
-            [2, 'CF', 'setting2', 0.01]],
-            columns = ['Model Index', 'Model', 'Param1', 'Param2'],
-            ).set_index('Model Index'))
+            [1, 'ALS', 10, 10, 0.05, 1.41]],
+            columns = ['Index', 'Model', 'Rank', 'MaxIter', 'RegParam', 'Rating RMSE'],
+            ).set_index('Index'))
 st.markdown('<center>Models configurations we trained and evaluated</center>', unsafe_allow_html = True)
 
-st.subheader('Evaluation')
-st.table(pd.DataFrame([
-            [1, '-', '-', 1.4, 0.9, 1.0],
-            [1, '-', '+', 1.4, 0.9, 1.0],
-            [1, '+', '-', 1.4, 0.9, 1.0],
-            [1, '+', '+', 1.4, 0.9, 1.0],
-            [2, '-', '-', 1.4, 0.9, 1.0],
-            [2, '-', '+', 1.4, 0.9, 1.0],
-            [2, '+', '-', 1.4, 0.9, 1.0],
-            [2, '+', '+', 1.4, 0.9, 1.0]],
-            columns = ['Model Index', 'Users Vote Limit', 'Movies Vote Limit', 'Rating RMSE', 'MAP', 'NDCG'],
-            ).set_index('Model Index')
-)
+# st.subheader('Evaluation')
+# st.table(pd.DataFrame([
+#             [1, '-', '-', 1.4, 0.9, 1.0],
+#             [1, '-', '+', 1.4, 0.9, 1.0],
+#             [1, '+', '-', 1.4, 0.9, 1.0],
+#             [1, '+', '+', 1.4, 0.9, 1.0],
+#             [2, '-', '-', 1.4, 0.9, 1.0],
+#             [2, '-', '+', 1.4, 0.9, 1.0],
+#             [2, '+', '-', 1.4, 0.9, 1.0],
+#             [2, '+', '+', 1.4, 0.9, 1.0]],
+#             columns = ['Model Index', 'Users Vote Limit', 'Movies Vote Limit', 'Rating RMSE', 'MAP', 'NDCG'],
+#             ).set_index('Model Index')
+# )
 
 st.header('Inference')
 st.markdown('Given a sample, predict its value and display results in a table.')
+
+st.text("""+------------+-----------+----------+
+|movie_id_enc|user_id_enc|prediction|
++------------+-----------+----------+
+|       148.0|      471.0|  7.902857|
+|       463.0|      471.0|  7.220045|
+|       471.0|      471.0| 6.9887342|
+|       496.0|      471.0|  6.625198|
+|       833.0|      471.0| 7.3281274|
+|      1088.0|      471.0| 7.5984254|
+|      1238.0|      471.0| 7.5677934|
+|      1342.0|      471.0|    4.2058|
+|      1580.0|      471.0| 7.3103867|
+|      1591.0|      471.0|  5.739383|
+|      1645.0|      471.0| 6.8555117|
+|      1829.0|      471.0|  7.620226|
+|      1959.0|      471.0|  7.487306|
+|      2122.0|      471.0| 6.5442185|
+|      2142.0|      471.0| 7.1860785|
+|      2366.0|      471.0|  6.768844|
+|      2659.0|      471.0|  7.575165|
+|      2866.0|      471.0|  7.089205|
+|      3175.0|      471.0| 6.0085006|
+|      3749.0|      471.0| 6.2505913|
++------------+-----------+----------+""")
