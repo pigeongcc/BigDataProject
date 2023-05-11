@@ -14,7 +14,7 @@ pip install ipython
 
 # download dataset files from source (Kaggle)
 echo
-echo "Downloading 1/3: users_export.csv - Cancelled after EDA step."
+echo "Downloading 1/3: users_export.csv - Cancelled after EDA query 1 conclusion."
 # wget -nc -O data/users_export.csv "https://storage.googleapis.com/kagglesdsdata/datasets/1300195/3341890/users_export.csv?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gcp-kaggle-com%40kaggle-161607.iam.gserviceaccount.com%2F20230502%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20230502T135026Z&X-Goog-Expires=259200&X-Goog-SignedHeaders=host&X-Goog-Signature=2408cb5d9dbc811cb13df62535091a7d43e554aaa7af74090c9acd52fefe42b24c4582bd98a0d5b50fc2695455cfc9b7aabf4753b562c04c2622cc0d9c85d880422a8d7e25e467724b6b939911b264b17d589c061786027441082baebba3afec2785dd3f42307202de2bdd8545f4a9b3b918912567ffccbcbc7ff6d69ee3fef23a744848e6b6323b33bc2be3c4d04c39e3f3070928c4b36c5d0859527288ccbd5716950eea098de0301dd4a82763c86d6cf5f0722d9d664fd7923174bbef966c1b40b57834be06401e8b4436d89cab36711119acaf78f4702028f1288a9186f2c624b50b2321488a441bf4bcd387cb9a06e0a666d4532742e3c441326eddd175"
 
 echo "Downloading 2/3: ratings_export.csv.zip ..."
