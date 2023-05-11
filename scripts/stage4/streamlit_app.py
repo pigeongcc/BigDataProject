@@ -46,7 +46,7 @@ st.markdown("""- Data: user rating matrix (URM)
 st.markdown('---')
 st.header('Descriptive Data Analysis')
 st.markdown("To train the RecSys model, we used the Letterboxd Movie Ratings Data, freely available on Kaggle ([link](%s))" % url['kaggle'])
-emps_dda = pd.DataFrame(columns = ["Table", "# of features", "# of instances"],
+emps_dda = pd.DataFrame(columns = ["Table", "# of instances", "# of features"],
                         data = [["Ratings", ratings.shape[0], ratings.shape[1]],
                                 ["Movies", movies.shape[0], movies.shape[1]]])
 st.write(emps_dda)

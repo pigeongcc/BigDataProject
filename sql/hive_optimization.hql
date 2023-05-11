@@ -25,7 +25,7 @@ CREATE EXTERNAL TABLE movies_opt(
 	popularity FLOAT,
 	release_date STRING
 )
-PARTITIONED BY (year_released FLOAT)
+PARTITIONED BY (year_released INT)
 CLUSTERED BY (movie_id) INTO 5 BUCKETS
 STORED AS AVRO LOCATION '/project/movies_opt'
 TBLPROPERTIES ('AVRO.COMPRESS'='SNAPPY');

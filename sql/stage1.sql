@@ -8,7 +8,6 @@ CREATE DATABASE project;
 
 
 -- add tables 
-
 /*
 CREATE TABLE users (
 	_id TEXT NOT NULL,
@@ -17,35 +16,14 @@ CREATE TABLE users (
 	num_reviews INTEGER,
 	username TEXT NOT NULL PRIMARY KEY
 ); 
-
-CREATE TABLE movies (
-	-- _id TEXT NOT NULL,
-	genres TEXT,
-	--_image_url TEXT,
-	-- imdb_id TEXT,
-	--_imdb_link TEXT,
-	movie_id TEXT NOT NULL PRIMARY KEY,
-	-- movie_title TEXT,
-	-- original_language TEXT,
-	-- overview TEXT,
-	popularity REAL,
-	-- temp_production_countries TEXT,
-	release_date DATE,
-	-- runtime REAL,
-	-- temp_spoken_languages TEXT,
-	--_tmdb_id TEXT,
-	--_tmdb_link TEXT,
-	-- vote_average REAL,
-	-- vote_count REAL,
-	year_released REAL
-); */
+*/
 
 CREATE TABLE movies (
 	genres TEXT,
 	movie_id TEXT NOT NULL PRIMARY KEY,
 	popularity REAL,
 	release_date DATE,
-	year_released REAL
+	year_released INTEGER
 );
 
 CREATE TABLE ratings (
