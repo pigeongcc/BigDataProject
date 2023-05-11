@@ -2,6 +2,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+import shutil
+import os
 
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
@@ -13,8 +15,9 @@ from pyspark.ml.tuning import CrossValidator
 from pyspark.ml.feature import IndexToString
 from pyspark.sql.types import StructType, StructField, StringType
 
-SEED = 42
 
+SEED = 42
+MODEL_PATH = 'models/best_als'
 
 spark = SparkSession.builder\
         .appName("BDT Project")\
@@ -74,16 +77,18 @@ cv = CrossValidator(estimator=als, estimatorParamMaps=param_grid, evaluator=eval
 
 model = cv.fit(training)
 best_model = model.bestModel
-best_model.save('models/best_als')
 predictions = best_model.transform(test)
 rmse = evaluator.evaluate(predictions)
+
+if os.path.isdir(MODEL_PATH):
+    shutil.rmtree(MODEL_PATH)
+best_model.save(MODEL_PATH)
 
 print("**Best Model**")
 print("RMSE =", rmse)
 print(" Rank:", best_model.rank)
 # print(" MaxIter:", best_model._java_obj.parent().getMaxIter())
 # print(" RegParam:", best_model._java_obj.parent().getRegParam())
-
 
 # Prediction or specific data sample
 predictions = model.transform(test)
@@ -109,10 +114,10 @@ top_5_movies.show()
 def suggest_for_user(user_name, limit=5):
     data = [(user_name,)]
     schema = StructType([StructField("user_id", StringType(), True)])
-    df = spark.createDataFrame(data=data, schema=schema)
+    user_df = spark.createDataFrame(data=data, schema=schema)
     
-    df = user_indexer.transform(df)
-    user = df.collect()[0].user_id_enc
+    user_df = user_indexer.transform(user_df)
+    user = user_df.collect()[0].user_id_enc
 
     user_prods = ratings.select("movie_id_enc").distinct() \
         .join(ratings.filter("user_id_enc=" + \
