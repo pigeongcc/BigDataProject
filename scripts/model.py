@@ -27,6 +27,8 @@ spark = SparkSession.builder\
         .enableHiveSupport()\
         .getOrCreate()
 
+sc = spark.sparkContext
+sc.setLogLevel('WARN')
 
 movies = spark.read.format("avro").table('project.movies')
 movies.createOrReplaceTempView('movies')
@@ -36,20 +38,20 @@ ratings = spark.read.format("avro").table("project.ratings")
 ratings.createOrReplaceGlobalTempView('ratings')
 ratings.printSchema()
 
-ratings.show(5)
+# ratings.show(5)
 ratings = ratings.drop('id')
 
 movie_indexer = StringIndexer(inputCol="movie_id", outputCol="movie_id_enc")
 movie_indexer = movie_indexer.fit(ratings)
 ratings = movie_indexer.transform(ratings)
 ratings = ratings.drop("movie_id")
-ratings.show(3)
+# ratings.show(3)
 
 user_indexer = StringIndexer(inputCol="user_id", outputCol="user_id_enc")
 user_indexer = user_indexer.fit(ratings)
 ratings = user_indexer.transform(ratings)
 ratings = ratings.drop("user_id")
-ratings.show(3)
+# ratings.show(3)
 
 
 (training, test) = ratings.randomSplit([0.7, 0.3], seed=SEED)
@@ -102,10 +104,10 @@ def suggest_for_user(user_name, limit=5):
     user_prods = ratings.select("movie_id_enc").distinct() \
         .join(ratings.filter("user_id_enc=" + \
         str(user)).select("user_id_enc").distinct(), how="full")
-    user_prods.summary().show()
+    # user_prods.summary().show()
 
     user_prods_res = model.transform(user_prods)
-    user_prods_res.show()
+    # user_prods_res.show()
 
     top_products = user_prods_res.sort(F.desc("prediction")).limit(limit).select("movie_id_enc")
     movie_inverter = IndexToString(
