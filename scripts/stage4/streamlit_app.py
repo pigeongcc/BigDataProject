@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import io
 import altair as alt
 
@@ -8,21 +7,26 @@ url = {
     "header_pic": "https://akket.com/wp-content/uploads/2020/04/KinoPoisk-HD-Besplatnaya-podpiska-Filmy-Serialy-5.jpg",
     "kaggle": "https://www.kaggle.com/datasets/samlearner/letterboxd-movie-ratings-data?select=movie_data.csv",
     "recsys": "https://user-images.githubusercontent.com/50820635/85274861-7e0e3b00-b4ba-11ea-8cd3-2690ec55a67a.jpg",
+    "matrix_factorization": "https://coderlessons.com/wp-content/uploads/images/jcg/837cf3da0c06bb8ee9719a6c6feeeb9f.png",
 }
 
-
-ratings = pd.read_csv("/root/BigDataProject/data/ratings_export_pd.csv")
-movies = pd.read_csv("/root/BigDataProject/data/movie_data_pd.csv")
+ratings = pd.read_csv("data/ratings_export_pd.csv")
+movies = pd.read_csv("data/movie_data_pd.csv")
 
 q1 = pd.read_csv("/root/BigDataProject/output/eda/q1.csv", sep='\t')
 q2 = pd.read_csv("/root/BigDataProject/output/eda/q2.csv", sep='\t')
 q3 = pd.read_csv("/root/BigDataProject/output/eda/q3.csv", sep='\t')
 q4 = pd.read_csv("/root/BigDataProject/output/eda/q4.csv", sep='\t')
 q5 = pd.read_csv("/root/BigDataProject/output/eda/q5.csv", sep='\t')
+# q1 = pd.read_csv("output/eda/q1.csv", sep='\t')
+# q2 = pd.read_csv("output/eda/q2.csv", sep='\t')
+# q3 = pd.read_csv("output/eda/q3.csv", sep='\t')
+# q4 = pd.read_csv("output/eda/q4.csv", sep='\t')
+# q5 = pd.read_csv("output/eda/q5.csv", sep='\t')
 
 
 st.title("Movies RecSys - Big Data Project, S23")
-st.text("Done by B20-AI-01 students: Andrey Vagin and Sergey Golubev")
+st.markdown("Done by B20-AI-01 students: Andrey Vagin and Sergey Golubev")
 st.markdown("""<style>body {
     background-color: white;
 }
@@ -32,15 +36,17 @@ st.markdown("""<style>body {
 }
 </style>""", unsafe_allow_html=True)
 
-st.image(url["header_pic"], caption = "Movies RecSys", width=600)
+st.image(url["header_pic"], caption = "Movies RecSys", width=700)
 
 st.markdown('---')
-st.header('About Recommendation Systems')
-st.image(url["recsys"], caption = "RecSys Map", width=1300)
-st.markdown("""- Data: user rating matrix (URM)
-- Model: memory-based collaborative filtering (alternating least squares)
-- Evaluation type: offline (k-Fold cross-validation)
-- Evaluation metric: RMSE on rating predictions""")
+st.header('Our RecSys Design')
+st.markdown("""- **Data**: user rating matrix (URM).
+- **Model**: memory-based collaborative filtering (alternating least squares implementation from Spark MLlib).
+    
+    It is based on matrix factorization. Users and Items get represented as vectors of size `rank` (hyperparameter), or factors. Multiplication of these new User and Item factor matrices produces a dense URM with predictions.""")
+st.image(url["matrix_factorization"], caption = "ALS is based on Matrix Factorization", width=700)
+st.markdown("""- **Evaluation type**: offline (k-Fold cross-validation).
+- **Evaluation metric**: RMSE on rating predictions.""")
 
 
 st.markdown('---')
@@ -71,6 +77,13 @@ st.text(buffer.getvalue())
 st.markdown("**Ratings distribution:**")
 st.write(movies.describe())
 
+st.subheader('URM Sparsity')
+num_votes = float(q2.vote_count.sum())
+num_cells = len(q2) * len(q3)
+sparsity = (num_cells - num_votes) / num_cells
+st.markdown("The sparsity level of the given URM is:")
+st.latex(r"sparsity = \frac{E}{C} = %f" % sparsity)
+st.markdown("""Where E - number of empty (non-rated) cells in the URM, C - total number of cells in the URM.""")
 
 st.markdown('---')
 st.header("Exploratory Data Analysis")
@@ -136,7 +149,6 @@ st.markdown("""1. The original rating from `ratings` table (the term with the we
 2. The movie popularity. We may try binary format for the baseline solution: a movie is either popular, or not (weight W_popular = 1 - W_orig)""")
 
 
-
 st.markdown('---')
 st.header('Predictive Data Analisys')
 st.subheader('Models Configurations')
@@ -162,7 +174,8 @@ st.markdown('<center>Models configurations we trained and evaluated</center>', u
 
 st.header('Inference')
 st.markdown('Given a sample, predict its value and display results in a table.')
-
+st.code("suggest_for_user('hafilova')   # the parameter is username", language = 'python')
+st.markdown('Output:')
 st.text("""+------------+-----------+----------+
 |movie_id_enc|user_id_enc|prediction|
 +------------+-----------+----------+
