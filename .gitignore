@@ -1,0 +1,9 @@
+# dataset files
+data
+
+# avsc files
+output/avsc/*
+output/eda/*
+
+# other files
+postgresql-42.6.0.jar
