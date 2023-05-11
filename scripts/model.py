@@ -84,6 +84,27 @@ print (" MaxIter:", best_model._java_obj.parent().getMaxIter())
 print (" RegParam:", best_model._java_obj.parent().getRegParam())
 
 
+# Prediction or specific data sample
+predictions = model.transform(test)
+
+user = predictions.limit(1).select("user_id_enc").collect()[0].user_id_enc
+
+user_prods = ratings.select("movie_id_enc").distinct().join(ratings.filter("user_id_enc=" + str(user)).select("user_id_enc").distinct(), how="full")
+user_prods.summary().show()
+
+user_prods_res = model.transform(user_prods)
+user_prods_res.show()
+
+top_5_movies = user_prods_res.sort(F.desc("prediction")).limit(5).select("movie_id_enc")
+top_5_movies.show()
+
+movie_inverter = IndexToString(inputCol="movie_id_enc", outputCol="movie", labels=movie_indexer.labels)
+top_5_movies = movie_inverter.transform(top_5_movies)
+
+top_5_movies = top_5_movies.drop("movie_id_enc")
+top_5_movies.show()
+
+
 def suggest_for_user(user_name, limit=5):
     data = [(user_name,)]
     schema = StructType([StructField("user_id", StringType(), True)])

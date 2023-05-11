@@ -42,7 +42,6 @@ SET datestyle TO iso, ymd;
 
 
 -- add constraints
-
 /*
 ALTER TABLE ratings
 ADD CONSTRAINT fk_user_username_userid

@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# setup a Python virtual environment
+sudo rm -rf bd_project_team_9
+virtualenv bd_project_team_9
+source bd_project_team_9/bin/activate
+pip install pandas
+pip install pylint
+pip install pyspark
+pip install streamlit
+pip install altair
+pip install numpy
+pip install ipython
+
 # download dataset files from source (Kaggle)
 echo
 echo "Downloading 1/3: users_export.csv - Cancelled after EDA step."
