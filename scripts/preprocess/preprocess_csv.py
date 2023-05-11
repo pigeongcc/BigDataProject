@@ -11,7 +11,7 @@ movies = pd.read_csv(movies_path, lineterminator='\n', index_col='_id')
 movies = movies.drop(columns=['image_url', 'imdb_id', 'imdb_link', 'movie_title', 'original_language', 'overview', 'production_countries', 'runtime', 'spoken_languages', 'tmdb_id', 'tmdb_link', 'vote_average', 'vote_count'])
 
 # cast year_released to int
-movies['year_released'] = movies['year_released'].astype(int)
+movies['year_released'] = movies['year_released'].astype(int, errors='ignore')
 
 # remove carriage return symbols
 movies = movies.replace({r'\r': ''}, regex=True)
