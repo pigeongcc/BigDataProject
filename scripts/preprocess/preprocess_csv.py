@@ -10,6 +10,9 @@ movies = pd.read_csv(movies_path, lineterminator='\n', index_col='_id')
 # drop unused columns
 movies = movies.drop(columns=['image_url', 'imdb_id', 'imdb_link', 'movie_title', 'original_language', 'overview', 'production_countries', 'runtime', 'spoken_languages', 'tmdb_id', 'tmdb_link', 'vote_average', 'vote_count'])
 
+# cast year_released to int
+movies['year_released'] = movies['year_released'].astype(int)
+
 # remove carriage return symbols
 movies = movies.replace({r'\r': ''}, regex=True)
 
@@ -43,4 +46,3 @@ ratings = ratings.drop(ratings[~ratings.movie_id.isin(movies.movie_id)].index)
 
 # save new csv
 ratings.to_csv(ratings_path_pd, index=False)
-del ratings
