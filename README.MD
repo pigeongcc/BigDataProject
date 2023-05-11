@@ -4,6 +4,7 @@
 2. We haven't managed to complete the Hive optimization. Although the code in `sql/hive_optimization.hql` seems to be ok, the bucketing jobs are constantly starting to fail at some moment of data inserting process. It happened for both small (10) and large (200-300) number of buckets.
 3. We implemented the grid search and cross-validation. Due to lack of resources and time, we only trained a model on 1x1 grid, and 2-fold cross-validation.
 4. We had no success with computing the MAP and NDCG metrics for the model, however we provide the rating RMSE metric.
+5. We also haven't finished the second model that takes item features into account when computing ratings for the URM.
 
 All the other parts of the project are fully comleted. The code is checked for reproducibility on a new machine.
 
