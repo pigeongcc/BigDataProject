@@ -23,7 +23,7 @@ CREATE TABLE movies (
 	movie_id TEXT NOT NULL PRIMARY KEY,
 	popularity REAL,
 	release_date DATE,
-	year_released INTEGER
+	year_released REAL
 );
 
 CREATE TABLE ratings (
