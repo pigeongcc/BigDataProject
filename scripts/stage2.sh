@@ -14,6 +14,9 @@ hdfs dfs -put output/avsc/ratings.avsc /project/avsc
 echo -e "\n~ ~ ~ Running stage2.hql\n"
 hive -f ./sql/stage2.hql
 
+# We haven't managed to setup Hive optimization.
+# Although the code seems to be ok, the bucketing jobs start to fail at some moment.
+
 # echo -e "\n~ ~ ~ Running hive_optimization.hql\n"
 # hive -f ./sql/hive_optimization.hql
 
@@ -46,6 +49,3 @@ cat output/eda/q4/* >> output/eda/q4.csv
 rm output/eda/q5.csv
 echo -e "movie_id\tpopularity" > output/eda/q5.csv
 cat output/eda/q5/* >> output/eda/q5.csv
-
-
-echo -e "\n~ ~ ~ Finished stage 2!"
